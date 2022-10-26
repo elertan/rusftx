@@ -24,8 +24,8 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_markets_request() {
-        let request = GetMarketsRequest::default();
         let rest_api = RestApi::<EndpointCom>::default();
+        let request = GetMarketsRequest::default();
         let result = rest_api.request(request).await;
         assert!(result.is_ok());
     }
