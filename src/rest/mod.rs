@@ -20,7 +20,14 @@ impl<TEndpoint: RestEndpoint> RestApi<TEndpoint> {
         let url = format!("{}/{}", self.endpoint.rest(), request.path());
         let method = request.method();
 
-        let rest_response = self.client.request(method, url)
+        let mut http_req = self.client.request(method, url);
+        if let Some(query) = request.query() {
+            http_req = http_req.query(&query);
+        }
+        if let Some(body) = request.body() {
+            http_req = http_req.json(&body);
+        }
+        let rest_response = http_req
             .send()
             .await
             .map_err(|err| RestError::Http(err))?

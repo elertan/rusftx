@@ -2,16 +2,18 @@ use std::borrow::Cow;
 use crate::rest::model::market::Market;
 use crate::rest::request::Request;
 
-#[derive(Debug, Default)]
-pub struct GetMarketsRequest {}
+#[derive(Debug, builder_pattern::Builder)]
+pub struct GetSingleMarketRequest {
+    market_name: String,
+}
 
-impl Request for GetMarketsRequest {
-    type Response = Vec<Market>;
+impl Request for GetSingleMarketRequest {
+    type Response = Market;
     type Query = ();
     type Body = ();
 
     fn path(&self) -> Cow<str> {
-        "markets".into()
+        format!("markets/{}", self.market_name).into()
     }
 
     fn method(&self) -> http::Method {
@@ -26,10 +28,14 @@ mod tests {
     use crate::rest::RestApi;
 
     #[tokio::test]
-    async fn test_get_markets_request() {
+    async fn test_get_single_market_request_btc_perp() {
         let rest_api = RestApi::<EndpointCom>::default();
-        let request = GetMarketsRequest::default();
+        let request = GetSingleMarketRequest::new()
+            .market_name("BTC-PERP".to_string())
+            .build();
         let result = rest_api.request(request).await;
         assert!(result.is_ok());
+        let market = result.unwrap();
+        assert_eq!(market.name, "BTC-PERP");
     }
 }
