@@ -62,7 +62,7 @@ mod tests {
     async fn test_get_order_history() {
         let rest_api = test_utils::get_rest_api_with_authentication_from_env();
         let request = GetOrderHistoryRequest::default();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         assert!(result.is_ok());
     }
 }

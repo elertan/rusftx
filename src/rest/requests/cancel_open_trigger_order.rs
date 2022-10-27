@@ -35,7 +35,7 @@ mod tests {
         let rest_api = test_utils::get_rest_api_with_authentication_from_env();
         let request = CancelOpenTriggerOrder::new().id(1).build();
 
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         assert!(result.is_err());
     }
 
@@ -53,13 +53,13 @@ mod tests {
                 .retry_until_filled(Some(true))
                 .trigger_price(Some(0.001))
                 .build();
-            let result = rest_api.request(request).await;
+            let result = rest_api.send(request).await;
             let trigger_order = result.unwrap();
             trigger_order
         };
 
         let request = CancelOpenTriggerOrder::new().id(trigger_order.id).build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         assert!(result.is_ok());
     }
 }

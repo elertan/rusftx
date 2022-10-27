@@ -104,7 +104,7 @@ mod tests {
             .size(0.001)
             .price(Some(1.0))
             .build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         dbg!(&result);
         assert!(result.is_ok());
     }

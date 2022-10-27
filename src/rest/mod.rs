@@ -17,10 +17,7 @@ pub struct RestApi<TEndpoint: RestEndpoint> {
 }
 
 impl<TEndpoint: RestEndpoint> RestApi<TEndpoint> {
-    async fn request<T: UnauthenticatedRequest>(
-        &self,
-        request: T,
-    ) -> Result<T::Response, RestError> {
+    async fn send<T: UnauthenticatedRequest>(&self, request: T) -> Result<T::Response, RestError> {
         execute_request_with_transform(&self.client, &self.endpoint, &request, |req, _| req).await
     }
 }
@@ -82,7 +79,7 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthenticationBuilder<TEndpoint> {
 }
 
 impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
-    async fn request<T: AuthenticatedRequest>(&self, request: T) -> Result<T::Response, RestError> {
+    async fn send<T: AuthenticatedRequest>(&self, request: T) -> Result<T::Response, RestError> {
         execute_request_with_transform(&self.client, &self.endpoint, &request, |mut req, body| {
             let timestamp = chrono::Utc::now().timestamp_millis();
 

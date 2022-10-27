@@ -49,7 +49,7 @@ mod tests {
     async fn test_get_open_trigger_orders() {
         let rest_api = test_utils::get_rest_api_with_authentication_from_env();
         let request = GetOpenTriggerOrdersRequest::new().build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         assert!(result.is_ok());
     }
 
@@ -59,7 +59,7 @@ mod tests {
         let request = GetOpenTriggerOrdersRequest::new()
             .market(Some("BTC-PERP".into()))
             .build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         assert!(result.is_ok());
     }
 
@@ -69,7 +69,7 @@ mod tests {
         let request = GetOpenTriggerOrdersRequest::new()
             .r#type(Some(TriggerOrderType::TakeProfit))
             .build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         assert!(result.is_ok());
     }
 
@@ -80,7 +80,7 @@ mod tests {
             .market(Some("BTC-PERP".into()))
             .r#type(Some(TriggerOrderType::TakeProfit))
             .build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         assert!(result.is_ok());
     }
 
@@ -91,7 +91,7 @@ mod tests {
             .market(Some("BTC-PERP".into()))
             .r#type(Some(TriggerOrderType::Stop))
             .build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         assert!(result.is_ok());
     }
 
@@ -102,7 +102,7 @@ mod tests {
             .market(Some("BTC-PERP".into()))
             .r#type(Some(TriggerOrderType::TrailingStop))
             .build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         assert!(result.is_ok());
     }
 }

@@ -1,6 +1,6 @@
-use std::borrow::Cow;
 use crate::rest::model::market::Market;
 use crate::rest::request::{AuthenticatedRequest, Request, UnauthenticatedRequest};
+use std::borrow::Cow;
 
 #[derive(Debug, builder_pattern::Builder)]
 pub struct GetSingleMarketRequest {
@@ -21,14 +21,13 @@ impl Request for GetSingleMarketRequest {
     }
 }
 
-
 impl UnauthenticatedRequest for GetSingleMarketRequest {}
 impl AuthenticatedRequest for GetSingleMarketRequest {}
 
 #[cfg(test)]
 mod tests {
-    use crate::endpoint::EndpointCom;
     use super::*;
+    use crate::endpoint::EndpointCom;
     use crate::rest::RestApi;
 
     #[tokio::test]
@@ -37,7 +36,7 @@ mod tests {
         let request = GetSingleMarketRequest::new()
             .market_name("BTC-PERP".to_string())
             .build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         assert!(result.is_ok());
         let market = result.unwrap();
         assert_eq!(market.name, "BTC-PERP");

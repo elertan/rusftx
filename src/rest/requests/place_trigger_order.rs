@@ -92,7 +92,7 @@ mod tests {
             .trigger_price(Some(0.001))
             .build();
 
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         dbg!(&result);
         assert!(result.is_ok());
     }

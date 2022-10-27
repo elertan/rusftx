@@ -34,7 +34,7 @@ mod tests {
     async fn test_cancel_order_request_non_existing_should_fail() {
         let rest_api = test_utils::get_rest_api_with_authentication_from_env();
         let request = CancelOrderRequest::new().order_id(1).build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         dbg!(&result);
         assert!(result.is_err());
     }
@@ -51,13 +51,13 @@ mod tests {
                 .size(0.001)
                 .price(Some(1.0))
                 .build();
-            let result = rest_api.request(request).await;
+            let result = rest_api.send(request).await;
             let order = result.unwrap();
             order
         };
 
         let request = CancelOrderRequest::new().order_id(order.id).build();
-        let result = rest_api.request(request).await;
+        let result = rest_api.send(request).await;
         dbg!(&result);
         assert!(result.is_ok());
     }
