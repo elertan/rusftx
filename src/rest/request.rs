@@ -15,6 +15,4 @@ pub trait Request {
     }
 }
 
-pub trait RequestWithAuthentication: Request {
-
-}
+pub trait AuthenticatedRequest: Request {}
