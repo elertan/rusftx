@@ -7,16 +7,24 @@ use crate::rest::model::order_status::OrderStatus;
 
 #[derive(Debug, Clone, Serialize, builder_pattern::Builder)]
 pub struct PlaceOrderRequest {
+    #[into]
     market: String,
     side: Side,
+    #[default(None)]
     price: Option<f64>,
     r#type: OrderType,
     size: f64,
+    #[default(None)]
     reduce_only: Option<bool>,
+    #[default(None)]
     ioc: Option<bool>,
+    #[default(None)]
     post_only: Option<bool>,
+    #[default(None)]
     client_id: Option<String>,
+    #[default(None)]
     reject_on_price_band: Option<bool>,
+    #[default(None)]
     reject_after_ts: Option<u64>,
 }
 
@@ -101,18 +109,20 @@ mod tests {
     use crate::rest::model::side::Side;
     use crate::rest::request::Request;
     use crate::rest::request::AuthenticatedRequest;
-    use crate::rest::request::RestRequestBuilder;
+    use crate::rest::requests::test_utils;
 
-    #[test]
-    fn test_place_order_request() {
-        // let rest_api = test_utils::get_authenticated_rest_api_from_env();
+    #[tokio::test]
+    async fn test_place_order_request() {
+        let rest_api = test_utils::get_rest_api_with_authentication_from_env();
         let request = PlaceOrderRequest::new()
-            .market("BTC-PERP".into())
+            .market("BTC-PERP")
             .side(Side::Buy)
             .r#type(OrderType::Limit)
             .size(0.001)
-            .price(Some(1))
-            .build()
-            .unwrap();
+            .price(Some(1.0))
+            .build();
+        let result = rest_api.request(request).await;
+        dbg!(&result);
+        assert!(result.is_ok());
     }
 }

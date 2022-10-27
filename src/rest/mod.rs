@@ -22,13 +22,60 @@ impl<TEndpoint: RestEndpoint> RestApi<TEndpoint> {
     }
 }
 
-#[derive(Debug, Default, builder_pattern::Builder)]
+#[derive(Debug, Default)]
 pub struct RestApiWithAuthentication<TEndpoint: RestEndpoint> {
     client: reqwest::Client,
     endpoint: TEndpoint,
     api_key: String,
     secret: String,
     subaccount: Option<String>,
+}
+
+#[derive(Debug, Default)]
+pub struct RestApiWithAuthenticationBuilder<TEndpoint: RestEndpoint> {
+    client: reqwest::Client,
+    endpoint: Option<TEndpoint>,
+    api_key: Option<String>,
+    secret: Option<String>,
+    subaccount: Option<String>,
+}
+
+impl<TEndpoint: RestEndpoint> RestApiWithAuthenticationBuilder<TEndpoint> {
+    pub fn new() -> Self {
+        Self {
+            client: reqwest::Client::new(),
+            endpoint: None,
+            api_key: None,
+            secret: None,
+            subaccount: None,
+        }
+    }
+
+    fn endpoint(mut self, endpoint: TEndpoint) -> Self {
+        self.endpoint = Some(endpoint);
+        self
+    }
+
+    fn authentication(mut self, api_key: String, secret: String) -> Self {
+        self.api_key = Some(api_key);
+        self.secret = Some(secret);
+        self
+    }
+
+    fn subaccount(mut self, subaccount: Option<String>) -> Self {
+        self.subaccount = subaccount;
+        self
+    }
+
+    fn build(self) -> RestApiWithAuthentication<TEndpoint> {
+        RestApiWithAuthentication {
+            client: self.client,
+            endpoint: self.endpoint.expect("endpoint is not set"),
+            api_key: self.api_key.expect("api_key is not set"),
+            secret: self.secret.expect("secret is not set"),
+            subaccount: self.subaccount,
+        }
+    }
 }
 
 impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
@@ -38,12 +85,13 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
 
             req = req.header("FTX-KEY", &self.api_key);
             let sign_payload = format!(
-                "{}{}/api{}{}",
+                "{}{}/api/{}{}",
                 timestamp,
                 request.method(),
                 request.path(),
                 body.unwrap_or("")
             );
+            dbg!(&sign_payload);
             let sign = HMAC::mac(sign_payload.as_bytes(), self.secret.as_bytes());
             let sign = hex::encode(sign);
             req = req.header("FTX-SIGN", sign);
