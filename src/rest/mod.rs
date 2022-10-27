@@ -159,7 +159,10 @@ async fn execute_request_with_transform<
     //     .await
     //     .map_err(|err| RestError::Http(err))?;
     let rest_response = serde_json::from_str::<RestResponse<TRequest::Response>>(&response_body)
-        .map_err(|err| RestError::Serde(err))?;
+        .map_err(|err| {
+            dbg!(&response_body);
+            RestError::Serde(err)
+        })?;
 
     match rest_response {
         RestResponse::Ok(ok_response) => Ok(ok_response.result),
