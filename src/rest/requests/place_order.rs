@@ -36,11 +36,17 @@ pub struct PlaceOrderRequestBody {
     price: Option<f64>,
     r#type: OrderType,
     size: f64,
+    #[serde(skip_serializing_if = "Option::is_none")]
     reduce_only: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     ioc: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     post_only: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     client_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     reject_on_price_band: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     reject_after_ts: Option<u64>,
 }
 
@@ -107,8 +113,6 @@ mod tests {
     use super::*;
     use crate::rest::model::order_type::OrderType;
     use crate::rest::model::side::Side;
-    use crate::rest::request::Request;
-    use crate::rest::request::AuthenticatedRequest;
     use crate::rest::requests::test_utils;
 
     #[tokio::test]
