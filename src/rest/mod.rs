@@ -13,20 +13,51 @@ pub mod requests;
 pub mod response;
 
 #[derive(Debug, Default)]
-pub struct RestApi<TEndpoint: RestEndpoint> {
+pub struct RestApi<TEndpoint> {
     client: reqwest::Client,
     endpoint: TEndpoint,
 }
 
-impl<TEndpoint: RestEndpoint> RestApi<TEndpoint> {
+impl<
+        TEndpoint: RestEndpoint
+            + SignHeaderNameEndpoint
+            + TimestampHeaderNameEndpoint
+            + SubaccountHeaderNameEndpoint,
+    > RestApi<TEndpoint>
+{
     async fn send<T: UnauthenticatedRequest>(&self, request: T) -> Result<T::Response, RestError> {
         execute_request_with_transform(&self.client, &self.endpoint, &request, |req, _| Ok(req))
             .await
     }
+
+    fn authenticate(self, api_key: String, secret: String) -> RestApiWithAuthentication<TEndpoint> {
+        RestApiWithAuthentication {
+            client: self.client,
+            endpoint: self.endpoint,
+            api_key,
+            secret,
+            subaccount: None,
+        }
+    }
+
+    fn authenticate_with_subaccount(
+        self,
+        api_key: String,
+        secret: String,
+        subaccount: String,
+    ) -> RestApiWithAuthentication<TEndpoint> {
+        RestApiWithAuthentication {
+            client: self.client,
+            endpoint: self.endpoint,
+            api_key,
+            secret,
+            subaccount: Some(subaccount),
+        }
+    }
 }
 
 #[derive(Debug, Default)]
-pub struct RestApiWithAuthentication<TEndpoint: RestEndpoint> {
+pub struct RestApiWithAuthentication<TEndpoint> {
     client: reqwest::Client,
     endpoint: TEndpoint,
     api_key: String,
@@ -35,7 +66,7 @@ pub struct RestApiWithAuthentication<TEndpoint: RestEndpoint> {
 }
 
 #[derive(Debug, Default)]
-pub struct RestApiWithAuthenticationBuilder<TEndpoint: RestEndpoint> {
+pub struct RestApiWithAuthenticationBuilder<TEndpoint> {
     client: reqwest::Client,
     endpoint: Option<TEndpoint>,
     api_key: Option<String>,
@@ -125,6 +156,22 @@ impl<
             Ok(req)
         })
         .await
+    }
+
+    fn remove_authentication_and_subaccount(self) -> RestApi<TEndpoint> {
+        RestApi {
+            client: self.client,
+            endpoint: self.endpoint,
+        }
+    }
+
+    fn change_authentication(&mut self, api_key: String, secret: String) {
+        self.api_key = api_key;
+        self.secret = secret;
+    }
+
+    fn change_subaccount(&mut self, subaccount: Option<String>) {
+        self.subaccount = subaccount;
     }
 }
 
