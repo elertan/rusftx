@@ -1,4 +1,6 @@
-use crate::endpoint::RestEndpoint;
+use crate::endpoint::{
+    RestEndpoint, SignHeaderNameEndpoint, SubaccountHeaderNameEndpoint, TimestampHeaderNameEndpoint,
+};
 use crate::rest::error::RestError;
 use crate::rest::request::{AuthenticatedRequest, Request, UnauthenticatedRequest};
 use crate::rest::response::RestResponse;
@@ -18,7 +20,8 @@ pub struct RestApi<TEndpoint: RestEndpoint> {
 
 impl<TEndpoint: RestEndpoint> RestApi<TEndpoint> {
     async fn send<T: UnauthenticatedRequest>(&self, request: T) -> Result<T::Response, RestError> {
-        execute_request_with_transform(&self.client, &self.endpoint, &request, |req, _| req).await
+        execute_request_with_transform(&self.client, &self.endpoint, &request, |req, _| Ok(req))
+            .await
     }
 }
 
@@ -78,7 +81,13 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthenticationBuilder<TEndpoint> {
     }
 }
 
-impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
+impl<
+        TEndpoint: RestEndpoint
+            + SignHeaderNameEndpoint
+            + TimestampHeaderNameEndpoint
+            + SubaccountHeaderNameEndpoint,
+    > RestApiWithAuthentication<TEndpoint>
+{
     async fn send<T: AuthenticatedRequest>(&self, request: T) -> Result<T::Response, RestError> {
         execute_request_with_transform(&self.client, &self.endpoint, &request, |mut req, body| {
             let timestamp = chrono::Utc::now().timestamp_millis();
@@ -88,7 +97,8 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
             let path = request.path();
 
             let full_path = if let Some(q) = request.query() {
-                let query_string: String = serde_urlencoded::to_string(q).unwrap();
+                let query_string: String =
+                    serde_urlencoded::to_string(q).map_err(|err| RestError::Urlencode(err))?;
                 if query_string.is_empty() {
                     path.to_string()
                 } else {
@@ -107,12 +117,12 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
             );
             let sign = HMAC::mac(sign_payload.as_bytes(), self.secret.as_bytes());
             let sign = hex::encode(sign);
-            req = req.header("FTX-SIGN", sign);
-            req = req.header("FTX-TS", timestamp);
+            req = req.header(self.endpoint.sign_header_name(), sign);
+            req = req.header(self.endpoint.timestamp_header_name(), timestamp);
             if let Some(subaccount) = &self.subaccount {
-                req = req.header("FTX-SUBACCOUNT", subaccount);
+                req = req.header(self.endpoint.subaccount_header_name(), subaccount);
             }
-            req
+            Ok(req)
         })
         .await
     }
@@ -121,7 +131,7 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
 async fn execute_request_with_transform<
     TRequest: Request,
     TEndpoint: RestEndpoint,
-    TTransform: FnOnce(reqwest::RequestBuilder, Option<&str>) -> reqwest::RequestBuilder,
+    TTransform: FnOnce(reqwest::RequestBuilder, Option<&str>) -> Result<reqwest::RequestBuilder, RestError>,
 >(
     http_client: &reqwest::Client,
     endpoint: &TEndpoint,
@@ -137,7 +147,7 @@ async fn execute_request_with_transform<
     };
 
     let mut http_req = http_client.request(method, url);
-    http_req = transform(http_req, body.as_deref());
+    http_req = transform(http_req, body.as_deref())?;
     if let Some(query) = request.query() {
         http_req = http_req.query(&query);
     }
