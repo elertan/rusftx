@@ -8,6 +8,7 @@ pub mod get_all_subaccounts;
 pub mod get_markets;
 pub mod get_open_orders;
 pub mod get_open_trigger_orders;
+pub mod get_order_book;
 pub mod get_order_history;
 pub mod get_single_market;
 pub mod get_subaccount_balances;

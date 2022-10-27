@@ -25,12 +25,19 @@ impl<
             + SubaccountHeaderNameEndpoint,
     > RestApi<TEndpoint>
 {
-    async fn send<T: UnauthenticatedRequest>(&self, request: T) -> Result<T::Response, RestError> {
+    pub async fn send<T: UnauthenticatedRequest>(
+        &self,
+        request: T,
+    ) -> Result<T::Response, RestError> {
         execute_request_with_transform(&self.client, &self.endpoint, &request, |req, _| Ok(req))
             .await
     }
 
-    fn authenticate(self, api_key: String, secret: String) -> RestApiWithAuthentication<TEndpoint> {
+    pub fn authenticate(
+        self,
+        api_key: String,
+        secret: String,
+    ) -> RestApiWithAuthentication<TEndpoint> {
         RestApiWithAuthentication {
             client: self.client,
             endpoint: self.endpoint,
@@ -40,7 +47,7 @@ impl<
         }
     }
 
-    fn authenticate_with_subaccount(
+    pub fn authenticate_with_subaccount(
         self,
         api_key: String,
         secret: String,
@@ -119,7 +126,10 @@ impl<
             + SubaccountHeaderNameEndpoint,
     > RestApiWithAuthentication<TEndpoint>
 {
-    async fn send<T: AuthenticatedRequest>(&self, request: T) -> Result<T::Response, RestError> {
+    pub async fn send<T: AuthenticatedRequest>(
+        &self,
+        request: T,
+    ) -> Result<T::Response, RestError> {
         execute_request_with_transform(&self.client, &self.endpoint, &request, |mut req, body| {
             let timestamp = chrono::Utc::now().timestamp_millis();
 
@@ -158,19 +168,19 @@ impl<
         .await
     }
 
-    fn remove_authentication_and_subaccount(self) -> RestApi<TEndpoint> {
+    pub fn remove_authentication_and_subaccount(self) -> RestApi<TEndpoint> {
         RestApi {
             client: self.client,
             endpoint: self.endpoint,
         }
     }
 
-    fn change_authentication(&mut self, api_key: String, secret: String) {
+    pub fn change_authentication(&mut self, api_key: String, secret: String) {
         self.api_key = api_key;
         self.secret = secret;
     }
 
-    fn change_subaccount(&mut self, subaccount: Option<String>) {
+    pub fn change_subaccount(&mut self, subaccount: Option<String>) {
         self.subaccount = subaccount;
     }
 }
