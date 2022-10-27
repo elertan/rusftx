@@ -1,4 +1,5 @@
 use crate::rest::model::side::Side;
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize)]
@@ -9,14 +10,14 @@ pub struct Order {
     pub market: String,
     pub r#type: OrderType,
     pub side: Side,
-    pub price: Option<f64>,
-    pub size: f64,
+    pub price: Option<Decimal>,
+    pub size: Decimal,
     pub status: OrderStatus,
-    pub filled_size: f64,
-    pub remaining_size: f64,
+    pub filled_size: Decimal,
+    pub remaining_size: Decimal,
     pub reduce_only: bool,
     pub liquidation: Option<bool>,
-    pub avg_fill_price: Option<f64>,
+    pub avg_fill_price: Option<Decimal>,
     pub post_only: bool,
     pub ioc: bool,
     pub created_at: chrono::DateTime<chrono::Utc>,

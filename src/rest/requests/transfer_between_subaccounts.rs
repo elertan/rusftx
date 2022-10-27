@@ -1,12 +1,13 @@
 use crate::rest::model::transfer::Transfer;
 use crate::rest::request::{AuthenticatedRequest, Request};
+use rust_decimal::Decimal;
 use std::borrow::Cow;
 
 #[derive(Debug, builder_pattern::Builder)]
 pub struct TransferBetweenSubaccountsRequest {
     #[into]
     pub coin: String,
-    pub size: f64,
+    pub size: Decimal,
     #[default(None)]
     pub source: Option<String>,
     #[into]
@@ -16,7 +17,7 @@ pub struct TransferBetweenSubaccountsRequest {
 #[derive(Debug, serde::Serialize)]
 pub struct TransferBetweenSubaccountsRequestBody {
     pub coin: String,
-    pub size: f64,
+    pub size: Decimal,
     pub source: Option<String>,
     pub destination: String,
 }

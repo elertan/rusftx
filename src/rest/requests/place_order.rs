@@ -1,6 +1,7 @@
 use crate::rest::model::order::{Order, OrderType};
 use crate::rest::model::side::Side;
 use crate::rest::request::{AuthenticatedRequest, Request};
+use rust_decimal::Decimal;
 use serde::Serialize;
 use std::borrow::Cow;
 
@@ -10,9 +11,9 @@ pub struct PlaceOrderRequest {
     pub market: String,
     pub side: Side,
     #[default(None)]
-    pub price: Option<f64>,
+    pub price: Option<Decimal>,
     pub r#type: OrderType,
-    pub size: f64,
+    pub size: Decimal,
     #[default(None)]
     pub reduce_only: Option<bool>,
     #[default(None)]
@@ -32,9 +33,9 @@ pub struct PlaceOrderRequest {
 pub struct PlaceOrderRequestBody {
     market: String,
     side: Side,
-    price: Option<f64>,
+    price: Option<Decimal>,
     r#type: OrderType,
-    size: f64,
+    size: Decimal,
     #[serde(skip_serializing_if = "Option::is_none")]
     reduce_only: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]

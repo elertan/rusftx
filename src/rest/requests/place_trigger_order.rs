@@ -1,6 +1,7 @@
 use crate::rest::model::side::Side;
 use crate::rest::model::trigger_order::{TriggerOrder, TriggerOrderType};
 use crate::rest::request::{AuthenticatedRequest, Request};
+use rust_decimal::Decimal;
 use serde::Serialize;
 use std::borrow::Cow;
 
@@ -9,18 +10,18 @@ pub struct PlaceTriggerOrderRequest {
     #[into]
     pub market: String,
     pub side: Side,
-    pub size: f64,
+    pub size: Decimal,
     pub r#type: TriggerOrderType,
     #[default(None)]
     pub reduce_only: Option<bool>,
     #[default(None)]
     pub retry_until_filled: Option<bool>,
     #[default(None)]
-    pub trigger_price: Option<f64>,
+    pub trigger_price: Option<Decimal>,
     #[default(None)]
-    pub order_price: Option<f64>,
+    pub order_price: Option<Decimal>,
     #[default(None)]
-    pub trail_value: Option<f64>,
+    pub trail_value: Option<Decimal>,
 }
 
 #[derive(Serialize)]
@@ -28,18 +29,18 @@ pub struct PlaceTriggerOrderRequest {
 pub struct PlaceTriggerOrderRequestBody {
     market: String,
     side: Side,
-    size: f64,
+    size: Decimal,
     r#type: TriggerOrderType,
     #[serde(skip_serializing_if = "Option::is_none")]
     reduce_only: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     retry_until_filled: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    trigger_price: Option<f64>,
+    trigger_price: Option<Decimal>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    order_price: Option<f64>,
+    order_price: Option<Decimal>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    trail_value: Option<f64>,
+    trail_value: Option<Decimal>,
 }
 
 impl Request for PlaceTriggerOrderRequest {

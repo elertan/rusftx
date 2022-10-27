@@ -1,5 +1,6 @@
 use crate::rest::model::order::OrderType;
 use crate::rest::model::side::Side;
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -9,9 +10,9 @@ pub struct TriggerOrder {
     pub market: String,
     pub r#type: TriggerOrderType,
     pub side: Side,
-    pub trigger_price: Option<f64>,
-    pub order_price: Option<f64>,
-    pub size: f64,
+    pub trigger_price: Option<Decimal>,
+    pub order_price: Option<Decimal>,
+    pub size: Decimal,
     pub status: TriggerOrderStatus,
     pub reduce_only: bool,
     pub created_at: chrono::DateTime<chrono::Utc>,
