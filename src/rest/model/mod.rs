@@ -4,5 +4,6 @@ pub mod order;
 pub mod orderbook;
 pub mod side;
 pub mod subaccount;
+pub mod trade;
 pub mod transfer;
 pub mod trigger_order;
