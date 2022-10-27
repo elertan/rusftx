@@ -3,6 +3,7 @@ pub mod cancel_open_trigger_order;
 pub mod cancel_order;
 pub mod change_subaccount_name;
 pub mod create_subaccount;
+pub mod delete_subaccount;
 pub mod get_all_subaccounts;
 pub mod get_markets;
 pub mod get_open_orders;
