@@ -87,11 +87,20 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
             let timestamp = chrono::Utc::now().timestamp_millis();
 
             req = req.header("FTX-KEY", &self.api_key);
+
+            let path = request.path();
+
+            let full_path = if let Some(q) = request.query() {
+                format!("{}?{}", path, serde_urlencoded::to_string(q).unwrap())
+            } else {
+                path.to_string()
+            };
+
             let sign_payload = format!(
                 "{}{}/api/{}{}",
                 timestamp,
                 request.method(),
-                request.path(),
+                full_path,
                 body.unwrap_or("")
             );
             let sign = HMAC::mac(sign_payload.as_bytes(), self.secret.as_bytes());

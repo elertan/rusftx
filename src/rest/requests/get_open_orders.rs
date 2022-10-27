@@ -47,4 +47,14 @@ mod tests {
         let result = rest_api.request(request).await;
         assert!(result.is_ok());
     }
+
+    #[tokio::test]
+    async fn test_get_open_orders_with_market() {
+        let rest_api = test_utils::get_rest_api_with_authentication_from_env();
+        let request = GetOpenOrdersRequest::new()
+            .market(Some("BTC-PERP".to_string()))
+            .build();
+        let result = rest_api.request(request).await;
+        assert!(result.is_ok());
+    }
 }
