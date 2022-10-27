@@ -1,9 +1,8 @@
-use std::borrow::Cow;
-use crate::rest::model::order_type::OrderType;
+use crate::rest::model::order::{Order, OrderType};
 use crate::rest::model::side::Side;
-use crate::rest::request::{Request, AuthenticatedRequest};
-use serde::{Serialize, Deserialize};
-use crate::rest::model::order_status::OrderStatus;
+use crate::rest::request::{AuthenticatedRequest, Request};
+use serde::Serialize;
+use std::borrow::Cow;
 
 #[derive(Debug, Clone, Serialize, builder_pattern::Builder)]
 pub struct PlaceOrderRequest {
@@ -50,26 +49,6 @@ pub struct PlaceOrderRequestBody {
     reject_after_ts: Option<u64>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct PlaceOrderOutput {
-    pub created_at: chrono::DateTime<chrono::Utc>,
-    pub filled_size: f64,
-    pub future: String,
-    pub id: u64,
-    pub market: String,
-    pub price: f64,
-    pub remaining_size: f64,
-    pub side: Side,
-    pub size: f64,
-    pub status: OrderStatus,
-    pub r#type: OrderType,
-    pub reduce_only: bool,
-    pub ioc: bool,
-    pub post_only: bool,
-    pub client_id: Option<String>,
-}
-
 impl From<&PlaceOrderRequest> for PlaceOrderRequestBody {
     fn from(r: &PlaceOrderRequest) -> Self {
         Self {
@@ -89,7 +68,7 @@ impl From<&PlaceOrderRequest> for PlaceOrderRequestBody {
 }
 
 impl Request for PlaceOrderRequest {
-    type Response = PlaceOrderOutput;
+    type Response = Order;
     type Query = ();
     type Body = PlaceOrderRequestBody;
 
@@ -111,7 +90,7 @@ impl AuthenticatedRequest for PlaceOrderRequest {}
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::rest::model::order_type::OrderType;
+    use crate::rest::model::order::OrderType;
     use crate::rest::model::side::Side;
     use crate::rest::requests::test_utils;
 

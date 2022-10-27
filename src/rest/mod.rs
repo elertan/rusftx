@@ -1,14 +1,14 @@
-use crate::endpoint::{RestEndpoint};
+use crate::endpoint::RestEndpoint;
 use crate::rest::error::RestError;
-use crate::rest::request::{Request, AuthenticatedRequest, UnauthenticatedRequest};
+use crate::rest::request::{AuthenticatedRequest, Request, UnauthenticatedRequest};
 use crate::rest::response::RestResponse;
 use hmac_sha256::HMAC;
 
-pub mod model;
-pub mod requests;
-pub mod request;
-pub mod response;
 pub mod error;
+pub mod model;
+pub mod request;
+pub mod requests;
+pub mod response;
 
 #[derive(Debug, Default)]
 pub struct RestApi<TEndpoint: RestEndpoint> {
@@ -17,7 +17,10 @@ pub struct RestApi<TEndpoint: RestEndpoint> {
 }
 
 impl<TEndpoint: RestEndpoint> RestApi<TEndpoint> {
-    async fn request<T: UnauthenticatedRequest>(&self, request: T) -> Result<T::Response, RestError> {
+    async fn request<T: UnauthenticatedRequest>(
+        &self,
+        request: T,
+    ) -> Result<T::Response, RestError> {
         execute_request_with_transform(&self.client, &self.endpoint, &request, |req, _| req).await
     }
 }
@@ -91,7 +94,6 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
                 request.path(),
                 body.unwrap_or("")
             );
-            dbg!(&sign_payload);
             let sign = HMAC::mac(sign_payload.as_bytes(), self.secret.as_bytes());
             let sign = hex::encode(sign);
             req = req.header("FTX-SIGN", sign);
@@ -100,7 +102,8 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
                 req = req.header("FTX-SUBACCOUNT", subaccount);
             }
             req
-        }).await
+        })
+        .await
     }
 }
 

@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -31,5 +31,5 @@ pub struct Market {
 #[serde(rename_all = "camelCase")]
 pub enum MarketType {
     Future,
-    Spot
+    Spot,
 }
