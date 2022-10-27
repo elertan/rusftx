@@ -1,3 +1,4 @@
+pub mod cancel_open_trigger_order;
 pub mod cancel_order;
 pub mod get_markets;
 pub mod get_open_orders;
