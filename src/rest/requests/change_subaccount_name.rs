@@ -48,8 +48,8 @@ mod tests {
     async fn test_change_subaccount_name() {
         let rest_api = test_utils::get_rest_api_with_authentication_from_env();
         let request = ChangeSubaccountNameRequest::new()
-            .nickname("test")
-            .new_nickname("test_renamed")
+            .nickname("sub1")
+            .new_nickname("sub1 renamed")
             .build();
         let result = rest_api.send(request).await;
         assert!(result.is_ok());

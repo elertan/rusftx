@@ -101,7 +101,7 @@ mod tests {
             .market("BTC-PERP")
             .side(Side::Buy)
             .r#type(OrderType::Limit)
-            .size(0.001)
+            .size(0.0001)
             .price(Some(1.0))
             .build();
         let result = rest_api.send(request).await;

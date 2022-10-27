@@ -43,9 +43,7 @@ mod tests {
     #[tokio::test]
     async fn test_create_subaccount() {
         let rest_api = test_utils::get_rest_api_with_authentication_from_env();
-        let request = CreateSubaccountRequest::new()
-            .nickname("test_create_subaccount")
-            .build();
+        let request = CreateSubaccountRequest::new().nickname("sub1").build();
         let result = rest_api.send(request).await;
         assert!(result.is_ok());
     }

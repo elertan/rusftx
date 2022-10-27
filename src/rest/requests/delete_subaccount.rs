@@ -42,7 +42,7 @@ mod tests {
     #[tokio::test]
     async fn delete_subaccount() {
         let rest_api = test_utils::get_rest_api_with_authentication_from_env();
-        let request = DeleteSubaccountRequest::new().nickname("test").build();
+        let request = DeleteSubaccountRequest::new().nickname("sub1").build();
         let result = rest_api.send(request).await;
         assert!(result.is_ok());
     }
