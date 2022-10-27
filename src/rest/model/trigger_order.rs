@@ -32,6 +32,34 @@ pub enum TriggerOrderType {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum TriggerOrderTypeQuery {
+    Stop,
+    TrailingStop,
+    TakeProfit,
+}
+
+impl From<TriggerOrderType> for TriggerOrderTypeQuery {
+    fn from(t: TriggerOrderType) -> Self {
+        match t {
+            TriggerOrderType::Stop => Self::Stop,
+            TriggerOrderType::TrailingStop => Self::TrailingStop,
+            TriggerOrderType::TakeProfit => Self::TakeProfit,
+        }
+    }
+}
+
+impl From<TriggerOrderTypeQuery> for TriggerOrderType {
+    fn from(t: TriggerOrderTypeQuery) -> Self {
+        match t {
+            TriggerOrderTypeQuery::Stop => Self::Stop,
+            TriggerOrderTypeQuery::TrailingStop => Self::TrailingStop,
+            TriggerOrderTypeQuery::TakeProfit => Self::TakeProfit,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum TriggerOrderStatus {
     Open,
