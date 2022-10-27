@@ -47,11 +47,11 @@ mod tests {
             let request = PlaceTriggerOrderRequest::new()
                 .market("BTC-PERP")
                 .side(Side::Sell)
-                .size(0.0001)
+                .size(rust_decimal_macros::dec!(0.0001))
                 .r#type(TriggerOrderType::Stop)
                 .reduce_only(Some(true))
                 .retry_until_filled(Some(true))
-                .trigger_price(Some(0.0001))
+                .trigger_price(Some(rust_decimal_macros::dec!(0.0001)))
                 .build();
             let result = rest_api.send(request).await;
             let trigger_order = result.unwrap();

@@ -58,7 +58,7 @@ mod tests {
         let rest_api = test_utils::get_rest_api_with_authentication_from_env();
         let request = TransferBetweenSubaccountsRequest::new()
             .coin("BTC")
-            .size(0.0001)
+            .size(rust_decimal_macros::dec!(0.0001))
             .source(Some("sub1".to_string()))
             .destination("sub2")
             .build();
@@ -67,7 +67,7 @@ mod tests {
         assert!(result.is_ok());
         let transfer: Transfer = result.unwrap();
         assert_eq!(transfer.coin, "BTC");
-        assert_eq!(transfer.size, 0.0001);
+        assert_eq!(transfer.size, rust_decimal_macros::dec!(0.0001));
         assert_eq!(transfer.status, "complete");
     }
 }
