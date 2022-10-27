@@ -64,7 +64,32 @@ mod tests {
         let rest_api = test_utils::get_rest_api_with_authentication_from_env();
         let request = GetTradesRequest::new()
             .market_name("BTC-PERP")
-            .start_time(Some(chrono::Utc::now() - chrono::Duration::days(1)))
+            .start_time(Some(chrono::Utc::now()))
+            .build();
+        let result = rest_api.send(request).await;
+        dbg!(&result);
+        assert!(result.is_ok());
+    }
+
+    #[tokio::test]
+    async fn test_get_trades_with_end_time() {
+        let rest_api = test_utils::get_rest_api_with_authentication_from_env();
+        let request = GetTradesRequest::new()
+            .market_name("BTC-PERP")
+            .end_time(Some(chrono::Utc::now()))
+            .build();
+        let result = rest_api.send(request).await;
+        dbg!(&result);
+        assert!(result.is_ok());
+    }
+
+    #[tokio::test]
+    async fn test_get_trades_with_start_time_and_end_time() {
+        let rest_api = test_utils::get_rest_api_with_authentication_from_env();
+        let request = GetTradesRequest::new()
+            .market_name("BTC-PERP")
+            .start_time(Some(chrono::Utc::now()))
+            .end_time(Some(chrono::Utc::now() + chrono::Duration::seconds(60)))
             .build();
         let result = rest_api.send(request).await;
         dbg!(&result);
