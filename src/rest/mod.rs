@@ -1,6 +1,6 @@
 use crate::endpoint::{RestEndpoint};
 use crate::rest::error::RestError;
-use crate::rest::request::{Request, AuthenticatedRequest};
+use crate::rest::request::{Request, AuthenticatedRequest, UnauthenticatedRequest};
 use crate::rest::response::RestResponse;
 use hmac_sha256::HMAC;
 
@@ -17,7 +17,7 @@ pub struct RestApi<TEndpoint: RestEndpoint> {
 }
 
 impl<TEndpoint: RestEndpoint> RestApi<TEndpoint> {
-    async fn request<T: Request>(&self, request: T) -> Result<T::Response, RestError> {
+    async fn request<T: UnauthenticatedRequest>(&self, request: T) -> Result<T::Response, RestError> {
         execute_request_with_transform(&self.client, &self.endpoint, &request, |req, _| req).await
     }
 }

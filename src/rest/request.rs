@@ -15,4 +15,6 @@ pub trait Request {
     }
 }
 
+pub trait UnauthenticatedRequest: Request {}
+
 pub trait AuthenticatedRequest: Request {}

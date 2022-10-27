@@ -1,6 +1,6 @@
 use std::borrow::Cow;
 use crate::rest::model::market::Market;
-use crate::rest::request::Request;
+use crate::rest::request::{AuthenticatedRequest, Request, UnauthenticatedRequest};
 
 #[derive(Debug, builder_pattern::Builder)]
 pub struct GetSingleMarketRequest {
@@ -20,6 +20,10 @@ impl Request for GetSingleMarketRequest {
         http::Method::GET
     }
 }
+
+
+impl UnauthenticatedRequest for GetSingleMarketRequest {}
+impl AuthenticatedRequest for GetSingleMarketRequest {}
 
 #[cfg(test)]
 mod tests {

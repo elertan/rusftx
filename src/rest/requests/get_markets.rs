@@ -1,6 +1,6 @@
 use std::borrow::Cow;
 use crate::rest::model::market::Market;
-use crate::rest::request::Request;
+use crate::rest::request::{AuthenticatedRequest, Request, UnauthenticatedRequest};
 
 #[derive(Debug, Default)]
 pub struct GetMarketsRequest {}
@@ -18,6 +18,9 @@ impl Request for GetMarketsRequest {
         http::Method::GET
     }
 }
+
+impl UnauthenticatedRequest for GetMarketsRequest {}
+impl AuthenticatedRequest for GetMarketsRequest {}
 
 #[cfg(test)]
 mod tests {
