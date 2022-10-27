@@ -145,7 +145,13 @@ async fn execute_request_with_transform<
         http_req = http_req.header(http::header::CONTENT_TYPE, "application/json");
         http_req = http_req.body(body);
     }
-    let http_response = http_req.send().await.map_err(|err| RestError::Http(err))?;
+    let http_response: reqwest::Response =
+        http_req.send().await.map_err(|err| RestError::Http(err))?;
+
+    if http_response.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
+        return Err(RestError::RateLimit);
+    }
+
     let response_body = http_response
         .text()
         .await
