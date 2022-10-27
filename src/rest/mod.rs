@@ -91,7 +91,12 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthentication<TEndpoint> {
             let path = request.path();
 
             let full_path = if let Some(q) = request.query() {
-                format!("{}?{}", path, serde_urlencoded::to_string(q).unwrap())
+                let query_string: String = serde_urlencoded::to_string(q).unwrap();
+                if query_string.is_empty() {
+                    path.to_string()
+                } else {
+                    format!("{}?{}", path, query_string)
+                }
             } else {
                 path.to_string()
             };
@@ -130,7 +135,7 @@ async fn execute_request_with_transform<
     let method = request.method();
 
     let body = match request.body() {
-        Some(body) => Some(serde_json::to_string(&body).unwrap()),
+        Some(body) => Some(serde_json::to_string(&body).map_err(|err| RestError::Serde(err))?),
         None => None,
     };
 
@@ -143,13 +148,18 @@ async fn execute_request_with_transform<
         http_req = http_req.header(http::header::CONTENT_TYPE, "application/json");
         http_req = http_req.body(body);
     }
-    let rest_response = http_req
-        .send()
-        .await
-        .map_err(|err| RestError::Http(err))?
-        .json::<RestResponse<TRequest::Response>>()
+    let http_response = http_req.send().await.map_err(|err| RestError::Http(err))?;
+    let response_body = http_response
+        .text()
         .await
         .map_err(|err| RestError::Http(err))?;
+    // dbg!(&response_body);
+    // let rest_response = http_response
+    //     .json::<RestResponse<TRequest::Response>>()
+    //     .await
+    //     .map_err(|err| RestError::Http(err))?;
+    let rest_response = serde_json::from_str::<RestResponse<TRequest::Response>>(&response_body)
+        .map_err(|err| RestError::Serde(err))?;
 
     match rest_response {
         RestResponse::Ok(ok_response) => Ok(ok_response.result),
