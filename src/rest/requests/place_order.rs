@@ -7,24 +7,24 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, Serialize, builder_pattern::Builder)]
 pub struct PlaceOrderRequest {
     #[into]
-    market: String,
-    side: Side,
+    pub market: String,
+    pub side: Side,
     #[default(None)]
-    price: Option<f64>,
-    r#type: OrderType,
-    size: f64,
+    pub price: Option<f64>,
+    pub r#type: OrderType,
+    pub size: f64,
     #[default(None)]
-    reduce_only: Option<bool>,
+    pub reduce_only: Option<bool>,
     #[default(None)]
-    ioc: Option<bool>,
+    pub ioc: Option<bool>,
     #[default(None)]
-    post_only: Option<bool>,
+    pub post_only: Option<bool>,
     #[default(None)]
-    client_id: Option<String>,
+    pub client_id: Option<String>,
     #[default(None)]
-    reject_on_price_band: Option<bool>,
+    pub reject_on_price_band: Option<bool>,
     #[default(None)]
-    reject_after_ts: Option<u64>,
+    pub reject_after_ts: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize)]
