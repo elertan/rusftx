@@ -1,5 +1,6 @@
 pub mod balance;
 pub mod candle;
+pub mod funding_rate;
 pub mod future;
 pub mod future_stats;
 pub mod market;
