@@ -1,3 +1,4 @@
+pub mod account_information;
 pub mod balance;
 pub mod candle;
 pub mod funding_rate;
@@ -8,6 +9,7 @@ pub mod index_weights;
 pub mod market;
 pub mod order;
 pub mod orderbook;
+pub mod position;
 pub mod side;
 pub mod subaccount;
 pub mod trade;

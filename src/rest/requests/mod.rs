@@ -4,6 +4,7 @@ pub mod cancel_order;
 pub mod change_subaccount_name;
 pub mod create_subaccount;
 pub mod delete_subaccount;
+pub mod get_account_information;
 pub mod get_all_subaccounts;
 pub mod get_expired_futures;
 pub mod get_funding_rates;
