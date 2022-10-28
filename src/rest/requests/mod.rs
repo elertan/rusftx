@@ -9,6 +9,7 @@ pub mod get_funding_rates;
 pub mod get_future;
 pub mod get_future_stats;
 pub mod get_historical_prices;
+pub mod get_index_weights;
 pub mod get_markets;
 pub mod get_open_orders;
 pub mod get_open_trigger_orders;
