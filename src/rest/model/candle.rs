@@ -9,5 +9,5 @@ pub struct Candle {
     pub close: Decimal,
     pub high: Decimal,
     pub low: Decimal,
-    pub volume: Decimal,
+    pub volume: Option<Decimal>,
 }
