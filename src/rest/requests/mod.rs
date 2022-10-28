@@ -14,6 +14,7 @@ pub mod get_order_history;
 pub mod get_single_market;
 pub mod get_subaccount_balances;
 pub mod get_trades;
+pub mod list_all_futures;
 pub mod place_order;
 pub mod place_trigger_order;
 pub mod test_utils;
