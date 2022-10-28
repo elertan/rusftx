@@ -1,6 +1,7 @@
 pub mod cancel_all_orders;
 pub mod cancel_open_trigger_order;
 pub mod cancel_order;
+pub mod change_account_leverage;
 pub mod change_subaccount_name;
 pub mod create_subaccount;
 pub mod delete_subaccount;
