@@ -3,6 +3,7 @@ pub mod candle;
 pub mod funding_rate;
 pub mod future;
 pub mod future_stats;
+pub mod index_constituent;
 pub mod index_weights;
 pub mod market;
 pub mod order;
