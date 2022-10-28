@@ -25,5 +25,6 @@ pub mod get_trades;
 pub mod list_all_futures;
 pub mod place_order;
 pub mod place_trigger_order;
+pub mod request_historical_balances_and_positions_snapshot;
 pub mod test_utils;
 pub mod transfer_between_subaccounts;
