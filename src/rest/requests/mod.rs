@@ -10,6 +10,7 @@ pub mod get_expired_futures;
 pub mod get_funding_rates;
 pub mod get_future;
 pub mod get_future_stats;
+pub mod get_historical_balances_and_positions_snapshot;
 pub mod get_historical_index;
 pub mod get_historical_prices;
 pub mod get_index_constituents;
