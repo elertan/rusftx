@@ -1,5 +1,5 @@
 use crate::rest::model::coin::Coin;
-use crate::rest::request::{AuthenticatedRequest, Request};
+use crate::rest::request::{AuthenticatedRequest, Request, UnauthenticatedRequest};
 use std::borrow::Cow;
 
 pub struct GetCoinsRequest;
@@ -19,6 +19,7 @@ impl Request for GetCoinsRequest {
 }
 
 impl AuthenticatedRequest for GetCoinsRequest {}
+impl UnauthenticatedRequest for GetCoinsRequest {}
 
 #[cfg(test)]
 mod tests {

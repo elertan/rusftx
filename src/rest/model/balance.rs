@@ -1,6 +1,7 @@
 use rust_decimal::Decimal;
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Balance {
     pub coin: String,
     pub free: Decimal,
