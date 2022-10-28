@@ -1,6 +1,7 @@
 pub mod balance;
 pub mod candle;
 pub mod future;
+pub mod future_stats;
 pub mod market;
 pub mod order;
 pub mod orderbook;

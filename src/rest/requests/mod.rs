@@ -6,6 +6,7 @@ pub mod create_subaccount;
 pub mod delete_subaccount;
 pub mod get_all_subaccounts;
 pub mod get_future;
+pub mod get_future_stats;
 pub mod get_historical_prices;
 pub mod get_markets;
 pub mod get_open_orders;
