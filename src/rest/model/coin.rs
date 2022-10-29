@@ -21,7 +21,7 @@ pub struct Coin {
     pub spot_margin_imf: Option<Decimal>,
     pub spot_margin_imf_factor: Option<Decimal>,
     pub fiat: bool,
-    pub methods: Vec<String>,
+    pub methods: Vec<Method>,
     pub erc_20_contract: Option<String>,
     pub bep_2_asset: Option<String>,
     pub trc_20_contract: Option<String>,
@@ -31,4 +31,86 @@ pub struct Coin {
     pub nft_quote_currency_eligible: Option<bool>,
     pub index_price: Option<Decimal>,
     pub image_url: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+#[serde(from = "String")]
+pub enum Method {
+    #[serde(rename = "erc20")]
+    ERC20,
+    #[serde(rename = "trx")]
+    TRC20,
+    #[serde(rename = "sol")]
+    SPL,
+    #[serde(rename = "omni")]
+    Omni,
+    #[serde(rename = "bep2")]
+    BEP2,
+    #[serde(rename = "bsc")]
+    BinanceSmartChain,
+    #[serde(rename = "ftm")]
+    Fantom,
+    #[serde(rename = "avax")]
+    Avax,
+    #[serde(rename = "matic")]
+    Matic,
+    // #[serde(rename = "algo")]
+    // Algorand,
+    // #[serde(rename = "btc")]
+    // Bitcoin,
+    // #[serde(rename = "eth")]
+    // Ethereum,
+    // #[serde(rename = "arbitrum")]
+    // Arbitrum,
+    // #[serde(rename = "bch")]
+    // BitcoinCash,
+    // #[serde(rename = "ltc")]
+    // Litecoin,
+    // #[serde(rename = "xrp")]
+    // XRP,
+    // #[serde(rename = "heco")]
+    // Heco,
+    // #[serde(rename = "mob")]
+    // Mobius,
+    // #[serde(rename = "doge")]
+    // Dogecoin,
+    Other(String),
+}
+
+impl From<String> for Method {
+    fn from(s: String) -> Self {
+        match s.as_str() {
+            "erc20" => Self::ERC20,
+            "trx" => Self::TRC20,
+            "sol" => Self::SPL,
+            "omni" => Self::Omni,
+            "bep2" => Self::BEP2,
+            "bsc" => Self::BinanceSmartChain,
+            "ftm" => Self::Fantom,
+            "avax" => Self::Avax,
+            "matic" => Self::Matic,
+            // "algo" => Self::Algorand,
+            // "btc" => Self::Bitcoin,
+            // "eth" => Self::Ethereum,
+            // "arbitrum" => Self::Arbitrum,
+            // "bch" => Self::BitcoinCash,
+            // "ltc" => Self::Litecoin,
+            // "xrp" => Self::XRP,
+            // "heco" => Self::Heco,
+            // "mob" => Self::Mobius,
+            // "doge" => Self::Dogecoin,
+            _ => Self::Other(s),
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::rest::model::coin::Coin;
+
+    #[test]
+    fn deserialize_from_json() {
+        let json = include_str!("../../../tests/data/coins.json");
+        serde_json::from_str::<Vec<Coin>>(json).unwrap();
+    }
 }

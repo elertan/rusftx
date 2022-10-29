@@ -2,6 +2,7 @@ pub mod account_information;
 pub mod balance;
 pub mod candle;
 pub mod coin;
+pub mod deposit_address;
 pub mod funding_rate;
 pub mod future;
 pub mod future_stats;
