@@ -11,6 +11,7 @@ pub mod get_balances;
 pub mod get_balances_of_all_accounts;
 pub mod get_coins;
 pub mod get_deposit_address;
+pub mod get_deposit_address_list;
 pub mod get_expired_futures;
 pub mod get_funding_rates;
 pub mod get_future;
