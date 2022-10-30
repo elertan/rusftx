@@ -2,3 +2,7 @@
 /Cargo.lock
 .idea/
 .env
+
+/simple-bot/target/
+/simple-bot/Cargo.lock
+/simple-bot/.env
