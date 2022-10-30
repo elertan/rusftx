@@ -20,3 +20,4 @@ pub mod subaccount;
 pub mod trade;
 pub mod transfer;
 pub mod trigger_order;
+pub mod withdrawal;
