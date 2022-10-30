@@ -92,23 +92,23 @@ impl<TEndpoint: RestEndpoint> RestApiWithAuthenticationBuilder<TEndpoint> {
         }
     }
 
-    fn endpoint(mut self, endpoint: TEndpoint) -> Self {
+    pub fn endpoint(mut self, endpoint: TEndpoint) -> Self {
         self.endpoint = Some(endpoint);
         self
     }
 
-    fn authentication(mut self, api_key: String, secret: String) -> Self {
+    pub fn authentication(mut self, api_key: String, secret: String) -> Self {
         self.api_key = Some(api_key);
         self.secret = Some(secret);
         self
     }
 
-    fn subaccount(mut self, subaccount: Option<String>) -> Self {
+    pub fn subaccount(mut self, subaccount: Option<String>) -> Self {
         self.subaccount = subaccount;
         self
     }
 
-    fn build(self) -> RestApiWithAuthentication<TEndpoint> {
+    pub fn build(self) -> RestApiWithAuthentication<TEndpoint> {
         RestApiWithAuthentication {
             client: self.client,
             endpoint: self.endpoint.expect("endpoint is not set"),

@@ -3,6 +3,6 @@
 .idea/
 .env
 
-/simple-bot/target/
-/simple-bot/Cargo.lock
-/simple-bot/.env
+/examples/simple-bot/target/
+/examples/simple-bot/Cargo.lock
+/examples/simple-bot/.env

@@ -2,8 +2,7 @@ use crate::rest::model::subaccount::Subaccount;
 use crate::rest::request::{AuthenticatedRequest, Request};
 use std::borrow::Cow;
 
-#[derive(Debug, Default)]
-pub struct GetAllSubaccountsRequest {}
+pub struct GetAllSubaccountsRequest;
 
 impl Request for GetAllSubaccountsRequest {
     type Response = Vec<Subaccount>;
@@ -29,8 +28,7 @@ mod tests {
     #[tokio::test]
     async fn test_get_all_subaccounts() {
         let rest_api = test_utils::get_rest_api_with_authentication_from_env();
-        let request = GetAllSubaccountsRequest::default();
-        let result = rest_api.send(request).await;
+        let result = rest_api.send(GetAllSubaccountsRequest).await;
         assert!(result.is_ok());
     }
 }
