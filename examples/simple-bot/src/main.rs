@@ -1,5 +1,6 @@
 use rusftx::endpoint::EndpointCom;
 use rusftx::rest::requests::create_subaccount::CreateSubaccountRequest;
+use rusftx::rest::requests::get_account_information::GetAccountInformationRequest;
 use rusftx::rest::requests::get_all_subaccounts::GetAllSubaccountsRequest;
 use rusftx::rest::requests::get_subaccount_balances::GetSubaccountBalancesRequest;
 use rusftx::rest::RestApiWithAuthenticationBuilder;
@@ -52,4 +53,12 @@ async fn main() {
         }
     };
     println!("Balances: {:?}", balances);
+
+    let account_info = match rest_api.send(GetAccountInformationRequest).await {
+        Ok(x) => x,
+        Err(err) => {
+            panic!("Failed to get account info: {:?}", err);
+        }
+    };
+    println!("Account info: {:?}", account_info);
 }

@@ -1,0 +1,108 @@
+[
+  {
+    "id": 6,
+    "coin": "USDC",
+    "txid": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "address": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "tag": null,
+      "method": "erc20",
+      "coin": null
+    },
+    "size": 10.0,
+    "fee": 0.0,
+    "status": "confirmed",
+    "time": "2022-10-26T10:00:00.000000+00:00",
+    "sentTime": "2022-10-27T09:50:00+00:00",
+    "confirmedTime": "2022-10-26T10:10:01.000000+00:00",
+    "confirmations": 17,
+    "method": "avax"
+  },
+  {
+    "id": 5,
+    "coin": "USDC",
+    "txid": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "address": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "tag": null,
+      "method": "erc20",
+      "coin": null
+    },
+    "size": 10.0,
+    "fee": 0.0,
+    "status": "confirmed",
+    "time": "2022-10-26T10:00:00.000000+00:00",
+    "sentTime": "2022-10-27T09:50:00+00:00",
+    "confirmedTime": "2022-10-26T10:10:01.000000+00:00",
+    "confirmations": 20,
+    "method": "avax"
+  },
+  {
+    "id": 4,
+    "coin": "USDC",
+    "txid": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "address": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "tag": null,
+      "method": "erc20",
+      "coin": null
+    },
+    "size": 1.0,
+    "fee": 0.0,
+    "status": "confirmed",
+    "time": "2022-10-26T10:00:00.000000+00:00",
+    "sentTime": "2022-10-27T09:50:00+00:00",
+    "confirmedTime": "2022-10-26T10:10:01.000000+00:00",
+    "confirmations": 13,
+    "method": "avax"
+  },
+  {
+    "id": 3,
+    "coin": "AVAX",
+    "txid": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "address": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "tag": null,
+      "method": "erc20",
+      "coin": null
+    },
+    "size": 5,
+    "fee": 0.0,
+    "status": "confirmed",
+    "time": "2022-10-26T10:00:00.000000+00:00",
+    "sentTime": "2022-10-27T09:50:00+00:00",
+    "confirmedTime": "2022-10-26T10:10:01.000000+00:00",
+    "confirmations": 26,
+    "method": "avax"
+  },
+  {
+    "id": 2,
+    "coin": "EUR",
+    "size": 1000.0,
+    "status": "complete",
+    "time": "2022-10-26T10:00:00.000000+00:00",
+    "confirmedTime": "2022-10-26T10:10:01.000000+00:00",
+    "uploadedFile": null,
+    "uploadedFileName": null,
+    "cancelReason": null,
+    "fiat": true,
+    "ach": false,
+    "type": "bank",
+    "supportTicketId": null
+  },
+  {
+    "id": 1,
+    "coin": "EUR",
+    "size": 100.0,
+    "status": "complete",
+    "time": "2022-10-26T10:00:00.000000+00:00",
+    "confirmedTime": "2022-10-26T10:10:01.000000+00:00",
+    "uploadedFile": null,
+    "uploadedFileName": null,
+    "cancelReason": null,
+    "fiat": true,
+    "ach": false,
+    "type": "bank",
+    "supportTicketId": null
+  }
+]
