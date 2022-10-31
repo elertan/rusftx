@@ -25,39 +25,11 @@ pub struct TriggerOrder {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "snake_case")]
 pub enum TriggerOrderType {
     Stop,
     TrailingStop,
     TakeProfit,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum TriggerOrderTypeQuery {
-    Stop,
-    TrailingStop,
-    TakeProfit,
-}
-
-impl From<TriggerOrderType> for TriggerOrderTypeQuery {
-    fn from(t: TriggerOrderType) -> Self {
-        match t {
-            TriggerOrderType::Stop => Self::Stop,
-            TriggerOrderType::TrailingStop => Self::TrailingStop,
-            TriggerOrderType::TakeProfit => Self::TakeProfit,
-        }
-    }
-}
-
-impl From<TriggerOrderTypeQuery> for TriggerOrderType {
-    fn from(t: TriggerOrderTypeQuery) -> Self {
-        match t {
-            TriggerOrderTypeQuery::Stop => Self::Stop,
-            TriggerOrderTypeQuery::TrailingStop => Self::TrailingStop,
-            TriggerOrderTypeQuery::TakeProfit => Self::TakeProfit,
-        }
-    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
@@ -66,4 +38,13 @@ pub enum TriggerOrderStatus {
     Open,
     Cancelled,
     Triggered,
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn deserialize_json() {
+        let json = include_str!("../../../tests/data/trigger_orders.json");
+        let _orders: Vec<super::TriggerOrder> = serde_json::from_str(json).unwrap();
+    }
 }

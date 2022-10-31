@@ -1,4 +1,4 @@
-use crate::rest::model::trigger_order::{TriggerOrder, TriggerOrderType, TriggerOrderTypeQuery};
+use crate::rest::model::trigger_order::{TriggerOrder, TriggerOrderType};
 use crate::rest::request::{AuthenticatedRequest, Request};
 use std::borrow::Cow;
 
@@ -13,7 +13,7 @@ pub struct GetOpenTriggerOrdersRequest {
 #[derive(Debug, serde::Serialize)]
 pub struct GetOpenTriggerOrdersQuery {
     pub market: Option<String>,
-    pub r#type: Option<TriggerOrderTypeQuery>,
+    pub r#type: Option<TriggerOrderType>,
 }
 
 impl Request for GetOpenTriggerOrdersRequest {
@@ -32,7 +32,7 @@ impl Request for GetOpenTriggerOrdersRequest {
     fn query(&self) -> Option<Self::Query> {
         Some(GetOpenTriggerOrdersQuery {
             market: self.market.clone(),
-            r#type: self.r#type.map(TriggerOrderTypeQuery::from),
+            r#type: self.r#type,
         })
     }
 }

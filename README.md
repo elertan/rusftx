@@ -90,7 +90,7 @@ Pagination can be performed using the `start_time` and `end_time` parameters on 
   - [x] Get order history
   - [x] Get open trigger orders
   - [x] Get trigger order triggers
-  - [ ] Get trigger order history
+  - [x] Get trigger order history
   - [ ] Get TWAP orders
   - [ ] Get TWAP order executions
   - [x] Place order
