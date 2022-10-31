@@ -1,15 +1,39 @@
-# RUSFTX
+# RusFTX
 
 ### (WIP) Rust bindings for the FTX REST and Websocket API
 
 [![Build Status](https://travis-ci.com/elertan/rusftx.svg?branch=master)](https://travis-ci.com/rusftx/rusftx)
 [![Crates.io](https://img.shields.io/crates/v/rusftx.svg)](https://crates.io/crates/rusftx)
-[![Docs.rs](https://docs.rs/rusftx/badge.svg)](https://docs.rs/rusftx)
+[![Docs.rs](https://docs.rs/RusFTX/badge.svg)](https://docs.rs/rusftx)
 ![License](https://img.shields.io/crates/l/rusftx.svg)
 
 [FTX API Documentation](https://docs.ftx.com/#overview)
 
-### Implemented REST APIs
+- All bindings follow the naming convention of the FTX API documentation whenever possible, making it easy to find the corresponding function.
+- Calls to REST APIs that require authentication are compile-time checked 
+
+### Authentication
+RusFTX supports both API key and subaccount authentication, as well as having the ability to provide a custom endpoint (which could be used for proxies for example).
+RusFTX has implemented endpoints for both FTX (.com) and FTX-US (.us) which can be configured using `EndpointCom` and `EndpointUs`.
+```rust
+let api_key = "YOUR_FTX_API_KEY";
+let secret = "YOUR_FTX_SECRET";
+
+let rest_api = RestApiWithAuthenticationBuilder::new()
+    .endpoint(EndpointCom)
+    .authentication(api_key, secret)
+    .build();
+```
+
+You can also use the Rustftx without authentication for endpoints that support it.
+```rust
+let rest_api = RestApi::new(EndpointCom);
+```
+
+### Pagination
+Pagination can be performed using the `start_time` and `end_time` parameters on all endpoints that support it by providing a chrono datetime in UTC.
+
+### Implemented REST API bindings
 
 - [x] Authentication
 - [x] Rate limits
@@ -172,3 +196,6 @@
   - [ ] Update the status of your support ticket
   - [ ] Count total number of unread support messages
   - [ ] Mark support messages read
+
+### Implemented Websocket API bindings
+Currently work in progress

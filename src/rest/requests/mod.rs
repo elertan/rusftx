@@ -3,6 +3,7 @@ pub mod cancel_open_trigger_order;
 pub mod cancel_order;
 pub mod change_account_leverage;
 pub mod change_subaccount_name;
+pub mod create_saved_addresses;
 pub mod create_subaccount;
 pub mod delete_subaccount;
 pub mod get_account_information;

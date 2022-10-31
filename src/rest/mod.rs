@@ -18,6 +18,15 @@ pub struct RestApi<TEndpoint> {
     endpoint: TEndpoint,
 }
 
+impl<TEndpoint> RestApi<TEndpoint> {
+    pub fn new(endpoint: TEndpoint) -> Self {
+        Self {
+            client: reqwest::Client::new(),
+            endpoint,
+        }
+    }
+}
+
 impl<
         TEndpoint: RestEndpoint
             + SignHeaderNameEndpoint
