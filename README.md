@@ -88,27 +88,27 @@ Pagination can be performed using the `start_time` and `end_time` parameters on 
 - [ ] Orders
   - [x] Get open orders
   - [x] Get order history
-  - [ ] Get open trigger orders
+  - [X] Get open trigger orders
   - [ ] Get trigger order triggers
   - [ ] Get trigger order history
   - [ ] Get TWAP orders
   - [ ] Get TWAP order executions
   - [x] Place order
-  - [ ] Place trigger order
+  - [x] Place trigger order
   - [ ] Place TWAP order
-  - [x] Modify order
-  - [x] Modify order by client ID
+  - [ ] Modify order
+  - [ ] Modify order by client ID
   - [ ] Modify trigger order
-  - [x] Get order status
-  - [x] Get order status by client ID
+  - [ ] Get order status
+  - [ ] Get order status by client ID
   - [x] Cancel order
   - [ ] Cancel TWAP order
-  - [x] Cancel order by client ID
-  - [ ] Cancel open trigger order
+  - [ ] Cancel order by client ID
+  - [x] Cancel open trigger order
   - [x] Cancel all orders
   - [ ] Bulk cancel orders
   - [ ] Bulk cancel orders by client id
-- [x] Fills
+- [ ] Fills
 - [ ] Funding Payments
 - [ ] Leveraged Tokens
   - [ ] List leveraged tokens
