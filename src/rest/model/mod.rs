@@ -21,6 +21,7 @@ pub mod side;
 pub mod subaccount;
 pub mod trade;
 pub mod transfer;
+pub mod trigger;
 pub mod trigger_order;
 pub mod withdrawal;
 pub mod withdrawal_fee;
