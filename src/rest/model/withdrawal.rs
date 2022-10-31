@@ -12,14 +12,6 @@ pub struct Withdrawal {
     pub time: DateTime<Utc>,
     pub txid: Option<String>,
     pub notes: Option<String>,
-    // pub address: Option<Address>,
-    // pub uploaded_file: Option<String>,
-    // pub uploaded_file_name: Option<String>,
-    // pub cancel_reason: Option<String>,
-    // pub fiat: Option<bool>,
-    // pub ach: Option<bool>,
-    // pub r#type: Option<String>,
-    // pub support_ticket_id: Option<u64>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -30,4 +22,11 @@ pub enum WithdrawalStatus {
     Sent,
     Complete,
     Cancelled,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum Protocol {
+    Wormhole,
+    Sollet,
 }

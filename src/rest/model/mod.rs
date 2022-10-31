@@ -1,5 +1,6 @@
 pub mod account_information;
 pub mod address;
+pub mod airdrop;
 pub mod balance;
 pub mod candle;
 pub mod coin;
