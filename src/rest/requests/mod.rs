@@ -43,3 +43,4 @@ pub mod request_historical_balances_and_positions_snapshot;
 pub mod request_withdrawal;
 pub mod test_utils;
 pub mod transfer_between_subaccounts;
+pub mod delete_saved_address;

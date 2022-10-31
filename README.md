@@ -79,8 +79,8 @@ Pagination can be performed using the `start_time` and `end_time` parameters on 
   - [x] Get airdrops
   - [x] Get withdrawal fees
   - [x] Get saved addresses
-  - [ ] Create saved addresses
-  - [ ] Delete saved addresses
+  - [x] Create saved addresses
+  - [x] Delete saved addresses
   - [ ] Register a SEN deposit
   - [ ] Request a SEN withdrawal
   - [ ] Register a Signet deposit
