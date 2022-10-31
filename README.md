@@ -31,7 +31,7 @@ let rest_api = RestApi::new(EndpointCom);
 ```
 
 ### Pagination
-Pagination can be performed using the `start_time` and `end_time` parameters on all endpoints that support it by providing a chrono datetime in UTC.
+Pagination can be performed using the `start_time` and `end_time` parameters on all endpoints that support it by providing a chrono `DateTime<Utc>`.
 
 ### Implemented REST API bindings
 
