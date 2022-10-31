@@ -22,3 +22,4 @@ pub mod trade;
 pub mod transfer;
 pub mod trigger_order;
 pub mod withdrawal;
+pub mod withdrawal_fee;

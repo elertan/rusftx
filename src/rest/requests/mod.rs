@@ -32,6 +32,7 @@ pub mod get_positions;
 pub mod get_single_market;
 pub mod get_subaccount_balances;
 pub mod get_trades;
+pub mod get_withdrawal_fees;
 pub mod get_withdrawal_history;
 pub mod list_all_futures;
 pub mod place_order;
