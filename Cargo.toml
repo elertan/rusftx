@@ -22,3 +22,5 @@ dotenv = "0.15.0"
 const_format = "0.2.30"
 rust_decimal = "1.26.1"
 rust_decimal_macros = "1.26.1"
+tokio-tungstenite = { version = "0.17.2", features = ["native-tls"] }
+futures = "0.3.25"

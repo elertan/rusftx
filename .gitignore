@@ -6,3 +6,7 @@
 /examples/simple-bot/target/
 /examples/simple-bot/Cargo.lock
 /examples/simple-bot/.env
+
+/examples/websocket/target/
+/examples/websocket/Cargo.lock
+/examples/websocket/.env
