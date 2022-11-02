@@ -10,8 +10,8 @@ use rusftx::ws::WebSocketApi;
 async fn main() {
     dotenv::dotenv().ok();
 
-    let _api_key = std::env::var("FTX_API_KEY").expect("FTX_API_KEY is not set");
-    let _secret = std::env::var("FTX_SECRET").expect("FTX_SECRET is not set");
+    let api_key = std::env::var("FTX_API_KEY").expect("FTX_API_KEY is not set");
+    let secret = std::env::var("FTX_SECRET").expect("FTX_SECRET is not set");
 
     println!("Connecting to websocket api...");
     let mut ws = match WebSocketApi::connect(EndpointCom).await {
@@ -22,28 +22,37 @@ async fn main() {
         }
     };
     println!("Connected to websocket api!");
-    // let mut ws = match ws.login(api_key, secret).await {
-    //     Ok(ws) => ws,
-    //     Err(err) => {
-    //         println!("Could not login to FTX websocket: {:?}", err);
-    //         return;
-    //     }
-    // };
 
-    println!("Subscribing to ticker channel for BTC-PERP...");
-    let subscribe_ticker_btc_message = SubscribeMessage::new()
-        .market(Some("BTC-PERP".to_string()))
-        .channel(Channel::Ticker)
-        .build();
-    if let Err(err) = ws.send(&subscribe_ticker_btc_message).await {
-        println!("Could not send subscribe message: {:?}", err);
-        return;
-    }
+    println!("Logging in...");
+    match ws.login(api_key, secret, None).await {
+        Ok(ws) => ws,
+        Err(err) => {
+            println!("Could not login to FTX websocket: {:?}", err);
+            return;
+        }
+    };
+    println!("Login data sent");
 
-    println!("Subscribing to markets channel");
-    let subscribe_markets_message = SubscribeMessage::new().channel(Channel::Markets).build();
-    if let Err(err) = ws.send(&subscribe_markets_message).await {
-        println!("Could not send subscribe message: {:?}", err);
+    // println!("Subscribing to ticker channel for BTC-PERP...");
+    // let subscribe_ticker_btc_message = SubscribeMessage::new()
+    //     .market(Some("BTC-PERP".to_string()))
+    //     .channel(Channel::Ticker)
+    //     .build();
+    // if let Err(err) = ws.send(&subscribe_ticker_btc_message).await {
+    //     println!("Could not send subscribe message: {:?}", err);
+    //     return;
+    // }
+    //
+    // println!("Subscribing to markets channel");
+    // let subscribe_markets_message = SubscribeMessage::new().channel(Channel::Markets).build();
+    // if let Err(err) = ws.send(&subscribe_markets_message).await {
+    //     println!("Could not send subscribe message: {:?}", err);
+    //     return;
+    // }
+
+    let subscribe_orders_message = SubscribeMessage::new().channel(Channel::Orders).build();
+    if let Err(err) = ws.send(&subscribe_orders_message).await {
+        println!("Could not send subscribe message for orders: {:?}", err);
         return;
     }
 
@@ -73,6 +82,10 @@ async fn main() {
                         "'{}': last price: {:?}, bid: {:?}, ask: {:?}",
                         data.market, data.last, data.bid, data.ask
                     );
+                }
+                IncomingWebSocketApiMessage::OrdersUpdate(data) => {
+                    let order = data.order;
+                    println!("Orders update for market '{}'", order.market);
                 }
                 IncomingWebSocketApiMessage::Markets(_data) => {
                     println!("Received markets data");

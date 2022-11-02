@@ -211,4 +211,4 @@ Pagination can be performed using the `start_time` and `end_time` parameters on 
 - [ ] Private Channels
   - [x] Authentication
   - [ ] Fills Channel
-  - [ ] Orders Channel
+  - [x] Orders Channel
