@@ -1,13 +1,17 @@
 # RusFTX
 
-### (WIP) Rust bindings for the FTX REST and Websocket API
+### Rust bindings for the FTX REST and Websocket API
 
-[![Build Status](https://travis-ci.com/elertan/rusftx.svg?branch=master)](https://travis-ci.com/rusftx/rusftx)
+[//]: # ([![Build Status]&#40;https://travis-ci.com/elertan/rusftx.svg?branch=master&#41;]&#40;https://travis-ci.com/rusftx/rusftx&#41;)
 [![Crates.io](https://img.shields.io/crates/v/rusftx.svg)](https://crates.io/crates/rusftx)
 [![Docs.rs](https://docs.rs/rusftx/badge.svg)](https://docs.rs/rusftx)
-![License](https://img.shields.io/crates/l/rusftx.svg)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
 [FTX API Documentation](https://docs.ftx.com/#overview)
+
+Not all APIs are implemented yet. If you need a specific API, please open an issue, or consider contributing by creating a pull request.
+
+RusFTX has taken inspiration from the existing [ftx crate](https://github.com/fabianboesiger/ftx) by Fabian Boesiger.
 
 - All bindings follow the naming convention of the FTX API documentation whenever possible, making it easy to find the corresponding function.
 - Calls to REST APIs that require authentication are compile-time checked 
