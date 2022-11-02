@@ -1,0 +1,56 @@
+{
+  "channel": "markets",
+  "type": "partial",
+  "data": {
+    "data": {
+      "1INCH-PERP": {
+        "name": "1INCH-PERP",
+        "enabled": true,
+        "postOnly": false,
+        "priceIncrement": 0.0001,
+        "sizeIncrement": 1.0,
+        "type": "future",
+        "baseCurrency": null,
+        "quoteCurrency": null,
+        "restricted": false,
+        "underlying": "1INCH",
+        "future": {
+          "name": "1INCH-PERP",
+          "underlying": "1INCH",
+          "description": "1INCH Token Perpetual Futures",
+          "type": "perpetual",
+          "expiry": null,
+          "perpetual": true,
+          "expired": false,
+          "enabled": true,
+          "postOnly": false,
+          "imfFactor": 0.0005,
+          "imfWeight": 1.0,
+          "underlyingDescription": "1INCH Token",
+          "expiryDescription": "Perpetual",
+          "moveStart": null,
+          "positionLimitWeight": 20.0,
+          "group": "perpetual"
+        },
+        "highLeverageFeeExempt": false,
+        "largeOrderThreshold": 350.0
+      },
+      "1INCH/USD": {
+        "name": "1INCH/USD",
+        "enabled": true,
+        "postOnly": false,
+        "priceIncrement": 0.0001,
+        "sizeIncrement": 1.0,
+        "type": "spot",
+        "baseCurrency": "1INCH",
+        "quoteCurrency": "USD",
+        "restricted": false,
+        "underlying": null,
+        "future": null,
+        "highLeverageFeeExempt": true,
+        "largeOrderThreshold": 350.0
+      }
+    },
+    "action": "partial"
+  }
+}

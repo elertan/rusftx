@@ -1,5 +1,6 @@
 use futures::StreamExt;
 use rusftx::endpoint::EndpointCom;
+use rusftx::ws::incoming_message::subscribed::SubscribedMessage;
 use rusftx::ws::incoming_message::IncomingWebSocketApiMessage;
 use rusftx::ws::message::subscribe::SubscribeMessage;
 use rusftx::ws::message::Channel;
@@ -9,8 +10,8 @@ use rusftx::ws::WebSocketApi;
 async fn main() {
     dotenv::dotenv().ok();
 
-    let api_key = std::env::var("FTX_API_KEY").expect("FTX_API_KEY is not set");
-    let secret = std::env::var("FTX_SECRET").expect("FTX_SECRET is not set");
+    let _api_key = std::env::var("FTX_API_KEY").expect("FTX_API_KEY is not set");
+    let _secret = std::env::var("FTX_SECRET").expect("FTX_SECRET is not set");
 
     println!("Connecting to websocket api...");
     let mut ws = match WebSocketApi::connect(EndpointCom).await {
@@ -30,11 +31,18 @@ async fn main() {
     // };
 
     println!("Subscribing to ticker channel for BTC-PERP...");
-    let subscribe_message = SubscribeMessage::new()
-        .market("BTC-PERP")
+    let subscribe_ticker_btc_message = SubscribeMessage::new()
+        .market(Some("BTC-PERP".to_string()))
         .channel(Channel::Ticker)
         .build();
-    if let Err(err) = ws.send(&subscribe_message).await {
+    if let Err(err) = ws.send(&subscribe_ticker_btc_message).await {
+        println!("Could not send subscribe message: {:?}", err);
+        return;
+    }
+
+    println!("Subscribing to markets channel");
+    let subscribe_markets_message = SubscribeMessage::new().channel(Channel::Markets).build();
+    if let Err(err) = ws.send(&subscribe_markets_message).await {
         println!("Could not send subscribe message: {:?}", err);
         return;
     }
@@ -43,17 +51,31 @@ async fn main() {
         match message_result {
             Ok(message) => match message {
                 IncomingWebSocketApiMessage::Pong => {}
-                IncomingWebSocketApiMessage::Subscribed(data) => {
-                    println!(
-                        "Subscribed to channel '{}' for market '{}'",
-                        data.channel, data.market
-                    );
-                }
+                IncomingWebSocketApiMessage::Subscribed(data) => match data {
+                    SubscribedMessage {
+                        channel,
+                        market: Some(market),
+                    } => {
+                        println!(
+                            "Subscribed to channel '{}' for market '{}'",
+                            channel, market,
+                        );
+                    }
+                    SubscribedMessage {
+                        channel,
+                        market: None,
+                    } => {
+                        println!("Subscribed to channel '{}'", channel);
+                    }
+                },
                 IncomingWebSocketApiMessage::TickerUpdate(data) => {
                     println!(
                         "'{}': last price: {:?}, bid: {:?}, ask: {:?}",
                         data.market, data.last, data.bid, data.ask
                     );
+                }
+                IncomingWebSocketApiMessage::Markets(_data) => {
+                    println!("Received markets data");
                 }
                 _ => println!("Received message: {:?}", message),
             },

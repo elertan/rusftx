@@ -22,6 +22,9 @@ pub enum Channel {
     Ticker,
     Orders,
     Fills,
+    Markets,
+    #[serde(rename = "orderbookGrouped")]
+    GroupedOrderbook,
 }
 
 impl Display for Channel {
@@ -32,6 +35,8 @@ impl Display for Channel {
             Channel::Ticker => write!(f, "ticker"),
             Channel::Orders => write!(f, "orders"),
             Channel::Fills => write!(f, "fills"),
+            Channel::Markets => write!(f, "markets"),
+            Channel::GroupedOrderbook => write!(f, "grouped orderbook"),
         }
     }
 }

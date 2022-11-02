@@ -6,7 +6,6 @@ use crate::ws::message::ping::PingMessage;
 use crate::ws::message::WebSocketApiMessage;
 use chrono::Utc;
 use futures::{
-    ready,
     task::{Context, Poll},
     Future, SinkExt, Stream, StreamExt,
 };
@@ -20,37 +19,33 @@ pub mod error;
 pub mod incoming_message;
 pub mod message;
 
-pub struct WebSocketApi<TEndpoint>
-where
-    TEndpoint: WsEndpoint,
-{
-    endpoint: TEndpoint,
+pub struct WebSocketApi {
+    // endpoint: TEndpoint,
     stream: WebSocketStream<MaybeTlsStream<TcpStream>>,
     ping_interval: Interval,
 }
 
-impl<TEndpoint> WebSocketApi<TEndpoint>
-where
-    TEndpoint: WsEndpoint,
-{
-    pub async fn connect(endpoint: TEndpoint) -> Result<Self, WebSocketApiError> {
+impl WebSocketApi {
+    pub async fn connect<TEndpoint>(endpoint: TEndpoint) -> Result<Self, WebSocketApiError>
+    where
+        TEndpoint: WsEndpoint,
+    {
         let (stream, _) = tokio_tungstenite::connect_async(endpoint.ws())
             .await
             .map_err(WebSocketApiError::Ws)?;
 
         Ok(Self {
-            endpoint,
             stream,
             ping_interval: tokio::time::interval(std::time::Duration::from_secs(15)),
         })
     }
 
     pub async fn login(
-        mut self,
+        &mut self,
         api_key: String,
         secret: String,
         subaccount: Option<String>,
-    ) -> Result<WebSocketApiWithAuthentication<TEndpoint>, WebSocketApiError> {
+    ) -> Result<(), WebSocketApiError> {
         let now = Utc::now();
         let timestamp_millis = now.timestamp_millis();
         let payload = format!("{}websocket_login", timestamp_millis);
@@ -69,11 +64,13 @@ where
             .build();
         self.send(&login_message).await?;
 
-        Ok(WebSocketApiWithAuthentication {
-            endpoint: self.endpoint,
-            stream: self.stream,
-            ping_interval: self.ping_interval,
-        })
+        Ok(())
+        //
+        // Ok(WebSocketApiWithAuthentication {
+        //     endpoint: self.endpoint,
+        //     stream: self.stream,
+        //     ping_interval: self.ping_interval,
+        // })
     }
 
     pub async fn send<T>(&mut self, web_socket_api_message: &T) -> Result<(), WebSocketApiError>
@@ -107,7 +104,13 @@ where
                         Message::Frame(_) => return Err(WebSocketApiError::UnsupportedMessageType),
                         Message::Close(_) => return Err(WebSocketApiError::UnsupportedMessageType),
                     };
-                    let raw_incoming_message = serde_json::from_str::<RawIncomingWebSocketApiMessage>(&text).map_err(WebSocketApiError::Serde)?;
+                    let raw_incoming_message = serde_json::from_str::<RawIncomingWebSocketApiMessage>(&text).map_err(|err| {
+                        #[cfg(debug_assertions)]
+                        {
+                            println!("Failed to parse incoming message: {}", text);
+                        }
+                        WebSocketApiError::Serde(err)
+                    })?;
                     return Ok(raw_incoming_message.into());
                 }
             }
@@ -115,19 +118,16 @@ where
     }
 }
 
-pub struct WebSocketApiWithAuthentication<TEndpoint>
-where
-    TEndpoint: WsEndpoint,
-{
-    endpoint: TEndpoint,
-    stream: WebSocketStream<MaybeTlsStream<TcpStream>>,
-    ping_interval: Interval,
-}
+// pub struct WebSocketApiWithAuthentication<TEndpoint>
+// where
+//     TEndpoint: WsEndpoint,
+// {
+//     endpoint: TEndpoint,
+//     stream: WebSocketStream<MaybeTlsStream<TcpStream>>,
+//     ping_interval: Interval,
+// }
 
-impl<TEndpoint> Stream for WebSocketApi<TEndpoint>
-where
-    TEndpoint: WsEndpoint + Unpin,
-{
+impl Stream for WebSocketApi {
     type Item = Result<IncomingWebSocketApiMessage, WebSocketApiError>;
 
     fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {

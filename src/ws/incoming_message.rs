@@ -1,9 +1,11 @@
+pub mod markets;
 pub mod pong;
 pub mod subscribed;
 pub mod ticker;
 pub mod trades;
 pub mod unsubscribed;
 
+use crate::ws::incoming_message::markets::{MarketsMessage, RawMarketsMessage};
 use crate::ws::incoming_message::subscribed::{RawSubscribedMessage, SubscribedMessage};
 use crate::ws::incoming_message::ticker::{RawTickerUpdateMessage, TickerUpdateMessage};
 use crate::ws::incoming_message::trades::{RawTradesUpdateMessage, TradesUpdateMessage};
@@ -23,6 +25,7 @@ pub enum IncomingWebSocketApiMessage {
     Unsubscribed(UnsubscribedMessage),
     TradesUpdate(TradesUpdateMessage),
     TickerUpdate(TickerUpdateMessage),
+    Markets(MarketsMessage),
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -33,6 +36,7 @@ pub enum RawIncomingWebSocketApiMessage {
     Unsubscribed(RawUnsubscribedMessage),
     TradesUpdate(RawTradesUpdateMessage),
     TickerUpdate(RawTickerUpdateMessage),
+    Markets(RawMarketsMessage),
 }
 
 impl From<RawIncomingWebSocketApiMessage> for IncomingWebSocketApiMessage {
@@ -50,6 +54,9 @@ impl From<RawIncomingWebSocketApiMessage> for IncomingWebSocketApiMessage {
             }
             RawIncomingWebSocketApiMessage::TickerUpdate(raw_ticker_update_message) => {
                 IncomingWebSocketApiMessage::TickerUpdate(raw_ticker_update_message.into())
+            }
+            RawIncomingWebSocketApiMessage::Markets(raw_markets_message) => {
+                IncomingWebSocketApiMessage::Markets(raw_markets_message.into())
             }
         }
     }

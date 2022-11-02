@@ -1,3 +1,4 @@
+use crate::rest::model::future::Future;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
@@ -25,7 +26,8 @@ pub struct Market {
     pub restricted: bool,
     pub volume_usd_24h: Option<Decimal>,
     pub large_order_threshold: Option<Decimal>,
-    pub is_etf_market: bool,
+    pub is_etf_market: Option<bool>,
+    pub future: Option<Future>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

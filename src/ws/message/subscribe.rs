@@ -3,7 +3,8 @@ use crate::ws::message::{Channel, Operation, WebSocketApiMessage};
 #[derive(Debug, builder_pattern::Builder)]
 pub struct SubscribeMessage {
     #[into]
-    pub market: String,
+    #[default(None)]
+    pub market: Option<String>,
     pub channel: Channel,
 }
 
@@ -19,7 +20,9 @@ impl serde::ser::Serialize for SubscribeMessage {
         let mut state = serializer.serialize_struct("SubscribeMessage", 3)?;
         state.serialize_field("op", &Operation::Subscribe)?;
         state.serialize_field("channel", &self.channel)?;
-        state.serialize_field("market", &self.market)?;
+        if let Some(market) = &self.market {
+            state.serialize_field("market", market)?;
+        }
         state.end()
     }
 }
