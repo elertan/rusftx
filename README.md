@@ -198,4 +198,13 @@ Pagination can be performed using the `start_time` and `end_time` parameters on 
   - [ ] Mark support messages read
 
 ### Implemented Websocket API bindings
-Currently work in progress
+- [ ] Public Channels
+  - [x] Ticker Channel
+  - [x] Markets Channel
+  - [x] Trades Channel
+  - [ ] Orderbook Channel
+  - [ ] Global Orderbook Channel
+- [ ] Private Channels
+  - [x] Authentication
+  - [ ] Fills Channel
+  - [ ] Orders Channel
