@@ -1,0 +1,13 @@
+{
+  "channel": "ticker",
+  "market": "BTC-PERP",
+  "type": "update",
+  "data": {
+    "bid": 20919.0,
+    "ask": 20920.0,
+    "bidSize": 2.3826,
+    "askSize": 9.9402,
+    "last": 20920.0,
+    "time": 1657888653.11847
+  }
+}
