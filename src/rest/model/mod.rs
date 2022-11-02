@@ -6,6 +6,7 @@ pub mod candle;
 pub mod coin;
 pub mod deposit;
 pub mod deposit_address;
+pub mod fill;
 pub mod funding_rate;
 pub mod future;
 pub mod future_stats;

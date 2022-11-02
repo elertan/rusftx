@@ -112,7 +112,7 @@ Pagination can be performed using the `start_time` and `end_time` parameters on 
   - [x] Cancel all orders
   - [ ] Bulk cancel orders
   - [ ] Bulk cancel orders by client id
-- [ ] Fills
+  - [x] Get fills
 - [ ] Funding Payments
 - [ ] Leveraged Tokens
   - [ ] List leveraged tokens
@@ -208,7 +208,7 @@ Pagination can be performed using the `start_time` and `end_time` parameters on 
   - [x] Trades Channel
   - [ ] Orderbook Channel
   - [ ] Global Orderbook Channel
-- [ ] Private Channels
+- [x] Private Channels
   - [x] Authentication
-  - [ ] Fills Channel
+  - [x] Fills Channel
   - [x] Orders Channel

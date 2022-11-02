@@ -59,7 +59,7 @@ mod tests {
     #[test]
     fn deserialize_json() {
         let json = include_str!("../../../tests/ws/trades_update_message.json");
-        let trades_update_message: super::RawTradesUpdateMessage =
+        let _trades_update_message: super::RawTradesUpdateMessage =
             serde_json::from_str(json).unwrap();
     }
 }
