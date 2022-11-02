@@ -6,7 +6,7 @@ license-file = "LICENSE"
 readme = "README.md"
 repository = "https://github.com/elertan/rusftx"
 description = "Rust bindings for the FTX REST and Websocket API"
-keywords = ["ftx", "api", "rest", "websocket", "bindings", "trading", "crypto", "exchange", "nft", "futures", "spot", "leverage"]
+keywords = ["ftx", "api", "rest", "websocket", "trading", "crypto"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
