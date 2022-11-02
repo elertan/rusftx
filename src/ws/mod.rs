@@ -88,30 +88,40 @@ impl WebSocketApi {
         Ok(())
     }
 
-    async fn poll_async(&mut self) -> Result<IncomingWebSocketApiMessage, WebSocketApiError> {
+    async fn poll_async(
+        &mut self,
+    ) -> Option<Result<IncomingWebSocketApiMessage, WebSocketApiError>> {
         loop {
             tokio::select! {
                 _ = self.ping_interval.tick() => {
-                    self.send(&PingMessage).await?;
+                    if let Err(err) = self.send(&PingMessage).await {
+                        return Some(Err(err));
+                    }
                 },
                 Some(message_result) = self.stream.next() => {
-                    let message: Message = message_result.map_err(WebSocketApiError::Ws)?;
+                    let message: Message = match message_result {
+                        Ok(message) => message,
+                        Err(err) => return Some(Err(WebSocketApiError::Ws(err))),
+                    };
                     let text = match message {
                         Message::Text(text) => text,
-                        Message::Binary(_) => return Err(WebSocketApiError::UnsupportedMessageType),
-                        Message::Ping(_) => return Err(WebSocketApiError::UnsupportedMessageType),
-                        Message::Pong(_) => return Err(WebSocketApiError::UnsupportedMessageType),
-                        Message::Frame(_) => return Err(WebSocketApiError::UnsupportedMessageType),
-                        Message::Close(_) => return Err(WebSocketApiError::UnsupportedMessageType),
+                        Message::Binary(_) => return Some(Err(WebSocketApiError::UnsupportedMessageType)),
+                        Message::Ping(_) => return Some(Err(WebSocketApiError::UnsupportedMessageType)),
+                        Message::Pong(_) => return Some(Err(WebSocketApiError::UnsupportedMessageType)),
+                        Message::Frame(_) => return Some(Err(WebSocketApiError::UnsupportedMessageType)),
+                        Message::Close(_) => return None,
                     };
-                    let raw_incoming_message = serde_json::from_str::<RawIncomingWebSocketApiMessage>(&text).map_err(|err| {
-                        #[cfg(debug_assertions)]
-                        {
-                            println!("Failed to parse incoming message: {}", text);
+                    let raw_incoming_message = match serde_json::from_str::<RawIncomingWebSocketApiMessage>(&text) {
+                        Ok(raw_incoming_message) => raw_incoming_message,
+                        Err(err) => {
+                            #[cfg(debug_assertions)]
+                            {
+                                println!("Failed to parse incoming message: {}", &text);
+                            }
+                            return Some(Err(WebSocketApiError::Serde(err)));
                         }
-                        WebSocketApiError::Serde(err)
-                    })?;
-                    return Ok(raw_incoming_message.into());
+                    };
+                    return Some(Ok(raw_incoming_message.into()));
                 }
             }
         }
@@ -135,7 +145,7 @@ impl Stream for WebSocketApi {
         futures::pin_mut!(fut);
         let poll = fut.poll(cx);
         match poll {
-            Poll::Ready(value) => Poll::Ready(Some(value)),
+            Poll::Ready(value) => Poll::Ready(value),
             Poll::Pending => Poll::Pending,
         }
     }
