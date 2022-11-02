@@ -1,0 +1,22 @@
+{
+  "channel": "orders",
+  "type": "update",
+  "data": {
+    "id": 1,
+    "clientId": "multipart-REDACTED",
+    "market": "BTC-PERP",
+    "type": "limit",
+    "side": "buy",
+    "price": 1.0,
+    "size": 1.0,
+    "status": "new",
+    "filledSize": 0.0,
+    "remainingSize": 1.0,
+    "reduceOnly": false,
+    "liquidation": false,
+    "avgFillPrice": null,
+    "postOnly": false,
+    "ioc": false,
+    "createdAt": "2022-11-02T13:52:26.535086+00:00"
+  }
+}
