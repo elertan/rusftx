@@ -17,6 +17,7 @@ pub mod get_deposit_address;
 pub mod get_deposit_address_list;
 pub mod get_deposit_history;
 pub mod get_expired_futures;
+pub mod get_fills;
 pub mod get_funding_rates;
 pub mod get_future;
 pub mod get_future_stats;
@@ -46,3 +47,11 @@ pub mod request_historical_balances_and_positions_snapshot;
 pub mod request_withdrawal;
 pub mod test_utils;
 pub mod transfer_between_subaccounts;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+pub enum QueryOrder {
+    #[serde(rename = "asc")]
+    Ascending,
+    #[serde(rename = "desc")]
+    Descending,
+}
