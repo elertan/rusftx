@@ -112,7 +112,7 @@ Pagination can be performed using the `start_time` and `end_time` parameters on 
   - [x] Cancel all orders
   - [ ] Bulk cancel orders
   - [ ] Bulk cancel orders by client id
-- [ ] Fills
+  - [x] Get fills
 - [ ] Funding Payments
 - [ ] Leveraged Tokens
   - [ ] List leveraged tokens
