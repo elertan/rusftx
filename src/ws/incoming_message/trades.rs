@@ -5,8 +5,13 @@ use rust_decimal::Decimal;
 
 #[derive(Debug)]
 pub struct TradesUpdateMessage {
-    pub id: u64,
     pub market: String,
+    pub trades: Vec<TradeItem>,
+}
+
+#[derive(Debug)]
+pub struct TradeItem {
+    pub id: u64,
     pub price: Decimal,
     pub size: Decimal,
     pub side: Side,
@@ -21,7 +26,7 @@ pub struct RawTradesUpdateMessage {
     #[serde(rename = "channel")]
     _channel: TradesChannel,
     market: String,
-    data: RawTradesUpdateMessageData,
+    data: Vec<RawTradesUpdateMessageDataItem>,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -31,7 +36,7 @@ pub enum TradesChannel {
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct RawTradesUpdateMessageData {
+pub struct RawTradesUpdateMessageDataItem {
     id: u64,
     price: Decimal,
     size: Decimal,
@@ -43,13 +48,25 @@ pub struct RawTradesUpdateMessageData {
 impl From<RawTradesUpdateMessage> for TradesUpdateMessage {
     fn from(raw_trades_update_message: RawTradesUpdateMessage) -> Self {
         Self {
-            id: raw_trades_update_message.data.id,
             market: raw_trades_update_message.market,
-            price: raw_trades_update_message.data.price,
-            size: raw_trades_update_message.data.size,
-            side: raw_trades_update_message.data.side,
-            liquidation: raw_trades_update_message.data.liquidation,
-            time: raw_trades_update_message.data.time,
+            trades: raw_trades_update_message
+                .data
+                .into_iter()
+                .map(Into::into)
+                .collect(),
+        }
+    }
+}
+
+impl From<RawTradesUpdateMessageDataItem> for TradeItem {
+    fn from(raw_trades_update_message: RawTradesUpdateMessageDataItem) -> Self {
+        Self {
+            id: raw_trades_update_message.id,
+            price: raw_trades_update_message.price,
+            size: raw_trades_update_message.size,
+            side: raw_trades_update_message.side,
+            liquidation: raw_trades_update_message.liquidation,
+            time: raw_trades_update_message.time,
         }
     }
 }
