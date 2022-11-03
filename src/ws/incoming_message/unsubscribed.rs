@@ -2,7 +2,7 @@ use crate::ws::message::Channel;
 
 #[derive(Debug)]
 pub struct UnsubscribedMessage {
-    pub market: String,
+    pub market: Option<String>,
     pub channel: Channel,
 }
 
@@ -11,7 +11,7 @@ pub struct UnsubscribedMessage {
 pub struct RawUnsubscribedMessage {
     #[serde(rename = "type")]
     _type: UnsubscribedType,
-    pub market: String,
+    pub market: Option<String>,
     pub channel: Channel,
 }
 
