@@ -2,12 +2,12 @@
   "type": "update",
   "channel": "trades",
   "market": "BTC-PERP",
-  "data": {
+  "data": [{
     "id": 15884651,
     "price": 5231.0,
     "size": 0.07,
     "side": "sell",
     "liquidation": false,
     "time": "2021-08-12T03:03:31.656050+00:00"
-  }
+  }]
 }
