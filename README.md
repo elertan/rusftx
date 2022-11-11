@@ -1,5 +1,7 @@
 # RusFTX
 
+## FTX has gone bankrupt right after publishing RusFTX, and therefore RusFTX sadly serves no real purpose anymore.
+
 ### Rust bindings for the FTX REST and Websocket API
 
 [//]: # ([![Build Status]&#40;https://travis-ci.com/elertan/rusftx.svg?branch=master&#41;]&#40;https://travis-ci.com/rusftx/rusftx&#41;)
